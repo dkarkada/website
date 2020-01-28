@@ -3470,8 +3470,8 @@ input, select, textarea {
 		@media screen and (orientation: portrait) and (max-width: 480px) {
 
 			#banner .image {
-				max-height: 35vh;
-				width: 100%;
+				max-height: 80vw;
+				max-width: 80vw;
 			}
 
 		}
