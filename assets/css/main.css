@@ -3454,6 +3454,7 @@ input, select, textarea {
 					flex-shrink: 0;
 					margin: 0 0 2em 0;
 					height: 25em;
+					width: 25em;
 					max-height: 50vh;
 					min-height: 18em;
 				}
