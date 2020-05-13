@@ -154,7 +154,9 @@ class App extends React.Component {
   }
 
   readData() {
-    var API_KEY = 'AIzaSyC73u6fBIk6aZdnZCKeXRgCY9vYTVXrbDc';
+    var API_KEY = fetch('./api.config').then((response) => {
+      return response.json().key;
+    });
     var SPREADSHEET_ID = '1AJO52gUTAElYGcfGMK07YkEfWdYNEITkjzS8hhOFTww'
     window.gapi.client.init({
       apiKey: API_KEY
