@@ -1,25 +1,24 @@
 import React from 'react';
+import {FaAdjust} from 'react-icons/fa'
 import './App.css';
 
 function Review(props){
+  var reviewer = props.reviewer ? <p><b>Reviewer: </b>{props.reviewer}</p> : null;
+  var misc = props.misc ? <p><b>Miscellaneous: </b>{props.misc}</p> : null;
   return (
-    <div className="Review">
-      <h3>{props.coursenum} {props.coursename}</h3>
-      <h3>{props.prof}, {props.date}</h3>
-      <h4>Reviewer: {props.reviewer}</h4>
-      <h4>Difficulty</h4>
-      <p>{props.difficulty}</p>
-      <h4>Workload</h4>
-      <p>{props.workload}</p>
-      <h4>Lectures</h4>
-      <p>{props.lecture}</p>
-      <h4>Miscellaneous</h4>
-      <p>{props.misc}</p>
+    <div className="review">
+      <h2>{props.coursenum} {props.coursename} <br />
+      {props.prof}, {props.date}</h2>
+      {reviewer}
+      <p><b>Difficulty: </b>{props.difficulty}</p>
+      <p><b>Workload: </b>{props.workload}</p>
+      <p><b>Lectures: </b>{props.lecture}</p>
+      {misc}
     </div>
   );
 }
 
-class ReviewForm extends React.Component {
+class ReviewReader extends React.Component {
 
   constructor(props) {
     super(props);
@@ -73,6 +72,7 @@ class ReviewForm extends React.Component {
 
   profChange(e) {
     if (this.state.dept == "") {
+      console.log(e.target.value);
       let dept = this.allProfs.get(e.target.value)[0].dept;
       this.setState({dept: dept, prof: e.target.value});
       return;
@@ -80,12 +80,16 @@ class ReviewForm extends React.Component {
     this.setState({prof: e.target.value});
   }
 
+  searchChange(e) {
+    console.log('a')
+    this.setState({search: e.target.value});
+  }
+
   render() {
-    var reviews;
+    var reviews = this.props.reviews;
     var availCourses;
     var availProfs;
     if (this.state.dept == "") {
-      reviews = this.props.reviews;
       availCourses = Array.from(this.allCoursenums.keys()).sort();
       availProfs = Array.from(this.allProfs.keys()).sort();
     } else {
@@ -93,44 +97,45 @@ class ReviewForm extends React.Component {
       availCourses = reviews.filter(review => {
           return this.state.prof == "" || review.prof == this.state.prof
         }).map(review => {
-          return review.coursenum.trim();
+          return review.coursenum;
       });
+      console.log(availCourses);
       availProfs = reviews.filter(review => {
           return this.state.course == "" || review.coursenum == this.state.course
         }).map(review => {
-          return review.prof.trim();
-      });
-      reviews = reviews.filter(review => {
-        return (this.state.prof == "" || review.prof == this.state.prof)
-          && (this.state.course == "" || review.coursenum == this.state.course)
-          && (this.state.search == "" || review.classname.toLowerCase().includes(this.state.course));
+          return review.prof;
       });
       availCourses = Array.from(new Set(availCourses)).sort();
       availProfs = Array.from(new Set(availProfs)).sort();
     }
+    reviews = reviews.filter(review => {
+      return (this.state.prof == "" || review.prof == this.state.prof)
+        && (this.state.course == "" || review.coursenum == this.state.course)
+        && (this.state.search == "" || review.coursename.toLowerCase().includes(this.state.search));
+    });
     // reviews = sortReviews(reviews);
     return (
-      <div className="Selectors">
-        <select value={this.state.dept} onChange={this.deptChange.bind(this)}>
-          <option key="" value=""> [All] </option>
+      <div className="review-reader">
+        <select className='selector' value={this.state.dept} onChange={this.deptChange.bind(this)}>
+          <option key="" value=""> [All departments] </option>
           {this.deptList.map(deptname =>
             <option key={deptname}>{deptname}</option>
           )}
         </select>
-        <select value={this.state.course} onChange={this.courseChange.bind(this)}>
-          <option key="" value=""> [All] </option>
+        <select className='selector' value={this.state.course} onChange={this.courseChange.bind(this)}>
+          <option key="" value=""> [All courses] </option>
           {availCourses.map(cn =>
             <option key={cn}>{cn}</option>
           )}
         </select>
-        <select value={this.state.prof} onChange={this.profChange.bind(this)}>
-          <option key="" value=""> [All] </option>
+        <select className='selector' value={this.state.prof} onChange={this.profChange.bind(this)}>
+          <option key="" value=""> [All professors] </option>
           {availProfs.map(prof =>
             <option key={prof}>{prof}</option>
           )}
         </select>
-        <input type="text" />
-        {reviews.map(review => <Review {...review}/>)}
+        <input className='selector' type="text" placeholder="Course name search" onChange={this.searchChange.bind(this)}/>
+        {reviews.map(review => <Review key={review.reviewID} {...review}/>)}
       </div>
     );
   }
@@ -141,7 +146,9 @@ class App extends React.Component {
     super(props); 
     this.state = {
       isLoading: true,
-      reviews: []
+      readMode: true,
+      reviews: [],
+      darkmode: false
     };
   }
 
@@ -153,10 +160,14 @@ class App extends React.Component {
     })
   }
 
-  readData() {
-    var API_KEY = fetch('./api.config').then((response) => {
-      return response.json().key;
-    });
+  async readKey() {
+    return await fetch('./api.config').then((response) => {
+      return response.json();
+    }).then(kv => {return kv.key});
+  }
+
+  async readData() {
+    var API_KEY = await this.readKey();
     var SPREADSHEET_ID = '1AJO52gUTAElYGcfGMK07YkEfWdYNEITkjzS8hhOFTww'
     window.gapi.client.init({
       apiKey: API_KEY
@@ -188,9 +199,14 @@ class App extends React.Component {
         });
         Promise.all(data).then((data) => {
           var reviews = [];
+          let revCount = 0;
           for (let i=0; i<data.length; i++) {
             let sheet = data[i].result.values.slice(2);
             for (var row of sheet) {
+              if (row.length < 9) {
+                let l = 9 - row.length
+                row.push(...Array.from({length: l}, () => ""))
+              }
               var rev = {
                 dept: titles[i].trim(),
                 coursenum: row[0].trim(),
@@ -201,9 +217,11 @@ class App extends React.Component {
                 workload: row[5].trim(),
                 lecture: row[6].trim(),
                 misc: row[7].trim(),
-                reviewer: row[8].trim()
+                reviewer: row[8].trim(),
+                reviewID: `rev${revCount}`
               };
               reviews.push(rev);
+              revCount += 1;
             }
           }
           this.setState({reviews: reviews, isLoading: false});
@@ -226,6 +244,10 @@ class App extends React.Component {
     document.body.appendChild(script);
   }
 
+  toggleDarkMode() {
+    this.setState(state => ({darkmode: !state.darkmode}));
+  }
+
   render() {
     if (this.state.isLoading) {
       return (
@@ -233,11 +255,24 @@ class App extends React.Component {
         <h1>Loading ...</h1>
       </center>);
     }
-    return (
-      <div className="App">
-        <ReviewForm reviews={this.state.reviews}></ReviewForm>
-      </div>
-    );
+    if (this.state.readMode) {
+      return (
+        <div className={this.state.darkmode ? 'App dark-mode': 'App'}>
+          <FaAdjust size={32} id='darkmodeButton' className={this.state.darkmode ? 'dark-mode': null} onClick={() => this.toggleDarkMode()}/>
+          <div className='column'>
+            <button id='rwButton' className={this.state.darkmode ? 'dark-mode': 'button-lightmode'} onClick={() => this.setState({readMode: false})}>Submit a review!</button>
+            <ReviewReader reviews={this.state.reviews}></ReviewReader>
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="App">
+          <button className='rwToggle' onClick={() => this.setState({readMode: true})}>Return to search</button>
+          <ReviewReader reviews={this.state.reviews}></ReviewReader>
+        </div>
+      );
+    }
   }
 }
 

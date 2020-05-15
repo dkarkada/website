@@ -1,48 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+JP:wght@300');
+@import url('https://fonts.googleapis.com/css?family=Merriweather:wght@700');
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  background-color: #ffffff;
+  background-image: url("/tile.png");
+  background-position: 150px 150px;
+  background-attachment: fixed;
+  background-repeat: repeat;
+  font-family: 'Noto Sans JP', sans-serif;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
-
-.App-link {
-  color: #61dafb;
+h2 {
+  font-family: 'Merriweather';
+  font-size: 150%;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App.dark-mode {
+  background-image: url("/tiledark.png");
 }
 
 center#loading {
   margin-top: 400px;
 }
 
-select {
+.review {
+  max-width: 500px;
+  margin: auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid darkgray;
+}
+
+.column {
+  background-color: inherit;
+  max-width: 900px;
+  margin: auto;
+  padding: 10px;
+}
+
+.selector {
   background-color: #ffffff;
+  font-family: inherit;
   font-size: large;
-  min-width: 300px;
+  min-width: 400px;
+  padding: 10px;
+  margin: 10px;
+  display: inline-block;
+}
+
+button {
+  font-family: inherit;
+  font-size: large;
+  padding: 10px;
+  margin: 10px;
+  border: 2px solid #181818;
+  background-color: #ffffff;
+}
+button:hover {
+  cursor: pointer;
+  transition: 0.3s;
+  background-color: #181818;
+  color: #ffffff;
+}
+button.dark-mode {
+  border: 2px solid #e4e4e4;
+}
+button.dark-mode:hover {
+  background-color: #ffffff;
+  color: #181818  ;
+}
+
+.dark-mode {
+  background-color: #181818;
+  color: #e4e4e4;
+}
+
+#darkmodeButton {
+  margin: 15px;
+  position: fixed;
+}
+#darkmodeButton:hover {
+  cursor: pointer;
 }
