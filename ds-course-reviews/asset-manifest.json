@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/ds-course-reviews/static/css/main.8807dd6d.chunk.css",
+    "main.js": "/ds-course-reviews/static/js/main.d9823a44.chunk.js",
+    "main.js.map": "/ds-course-reviews/static/js/main.d9823a44.chunk.js.map",
+    "runtime-main.js": "/ds-course-reviews/static/js/runtime-main.2f1742ac.js",
+    "runtime-main.js.map": "/ds-course-reviews/static/js/runtime-main.2f1742ac.js.map",
+    "static/js/2.8831dcfa.chunk.js": "/ds-course-reviews/static/js/2.8831dcfa.chunk.js",
+    "static/js/2.8831dcfa.chunk.js.map": "/ds-course-reviews/static/js/2.8831dcfa.chunk.js.map",
+    "index.html": "/ds-course-reviews/index.html",
+    "precache-manifest.8780e500621f1793faea2fbe9f682122.js": "/ds-course-reviews/precache-manifest.8780e500621f1793faea2fbe9f682122.js",
+    "service-worker.js": "/ds-course-reviews/service-worker.js",
+    "static/css/main.8807dd6d.chunk.css.map": "/ds-course-reviews/static/css/main.8807dd6d.chunk.css.map",
+    "static/js/2.8831dcfa.chunk.js.LICENSE.txt": "/ds-course-reviews/static/js/2.8831dcfa.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/ds-course-reviews/static/media/tiledark.2a3d822b.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2f1742ac.js",
+    "static/js/2.8831dcfa.chunk.js",
+    "static/css/main.8807dd6d.chunk.css",
+    "static/js/main.d9823a44.chunk.js"
+  ]
+}
