@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "7a15d3870c2209019ca623b0cd9d3298",
+    "revision": "0950c897517e807bebe369134c200bcc",
     "url": "/ds-course-reviews/index.html"
   },
   {
-    "revision": "439ca7408a7b0f3333d4",
-    "url": "/ds-course-reviews/static/css/main.8807dd6d.chunk.css"
+    "revision": "a9d5341de126870d82ac",
+    "url": "/ds-course-reviews/static/css/main.6a1da325.chunk.css"
   },
   {
-    "revision": "c237e3e00a92ad1fd740",
-    "url": "/ds-course-reviews/static/js/2.8831dcfa.chunk.js"
+    "revision": "d534fb90cb45b35bb416",
+    "url": "/ds-course-reviews/static/js/2.89c6342a.chunk.js"
   },
   {
     "revision": "e88a3e95b5364d46e95b35ae8c0dc27d",
-    "url": "/ds-course-reviews/static/js/2.8831dcfa.chunk.js.LICENSE.txt"
+    "url": "/ds-course-reviews/static/js/2.89c6342a.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "439ca7408a7b0f3333d4",
-    "url": "/ds-course-reviews/static/js/main.d9823a44.chunk.js"
+    "revision": "a9d5341de126870d82ac",
+    "url": "/ds-course-reviews/static/js/main.7124af3b.chunk.js"
   },
   {
     "revision": "ead5e808eb3668c50e7b",
